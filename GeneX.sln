@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneX.Web", "GeneX.Web\GeneX.Web.csproj", "{036A6A00-EC58-428F-B62C-B0249EC40D06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneX.Web.Tests", "GeneX.Web.Tests\GeneX.Web.Tests.csproj", "{C0E64854-6360-4E47-8471-3707C923084F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneX.Model", "GeneX.Model\GeneX.Model.csproj", "{B8983B97-36C2-41D6-B27A-A3206DC68981}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneX.Security", "GeneX.Security\GeneX.Security.csproj", "{7E364229-0EED-4873-8BA8-963F18A280FD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2CB24641-630D-48E2-8571-962B57976CCF}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Any CPU = Development|Any CPU
+		Production|Any CPU = Production|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{036A6A00-EC58-428F-B62C-B0249EC40D06}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{036A6A00-EC58-428F-B62C-B0249EC40D06}.Development|Any CPU.Build.0 = Development|Any CPU
+		{036A6A00-EC58-428F-B62C-B0249EC40D06}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{036A6A00-EC58-428F-B62C-B0249EC40D06}.Production|Any CPU.Build.0 = Production|Any CPU
+		{C0E64854-6360-4E47-8471-3707C923084F}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{C0E64854-6360-4E47-8471-3707C923084F}.Development|Any CPU.Build.0 = Development|Any CPU
+		{C0E64854-6360-4E47-8471-3707C923084F}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{B8983B97-36C2-41D6-B27A-A3206DC68981}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{B8983B97-36C2-41D6-B27A-A3206DC68981}.Development|Any CPU.Build.0 = Development|Any CPU
+		{B8983B97-36C2-41D6-B27A-A3206DC68981}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{B8983B97-36C2-41D6-B27A-A3206DC68981}.Production|Any CPU.Build.0 = Production|Any CPU
+		{7E364229-0EED-4873-8BA8-963F18A280FD}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{7E364229-0EED-4873-8BA8-963F18A280FD}.Development|Any CPU.Build.0 = Development|Any CPU
+		{7E364229-0EED-4873-8BA8-963F18A280FD}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{7E364229-0EED-4873-8BA8-963F18A280FD}.Production|Any CPU.Build.0 = Production|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
