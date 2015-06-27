@@ -5,11 +5,11 @@ namespace GeneX.Model.Migrations
 	using System.Data.Entity.Migrations;
 	using System.Linq;
 
-	internal sealed class Configuration : DbMigrationsConfiguration<GeneX.Model.GeneXContext>
+	public sealed class Configuration : DbMigrationsConfiguration<GeneX.Model.GeneXContext>
 	{
 		public Configuration()
 		{
-			AutomaticMigrationsEnabled = false;
+			AutomaticMigrationsEnabled = true;
 			ContextKey = "GeneX.Model.GeneXContext";
 		}
 
@@ -20,7 +20,7 @@ namespace GeneX.Model.Migrations
 		}
 
 		private void SeedGenomePermissions(GeneX.Model.GeneXContext context)
-		{
+		{/*
 			context.GenomePermission.AddOrUpdate(it => it.GenomePermissionId,
 				new GenomePermission()
 				{
@@ -39,7 +39,7 @@ namespace GeneX.Model.Migrations
 					UserId = new Guid("43744CF2-B264-4F40-9B85-D59D4322B106")
 				}
 			);
-			context.SaveChanges();
+			context.SaveChanges();*/
 		}
 
 		private void SeedPermissions(GeneX.Model.GeneXContext context)

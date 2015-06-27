@@ -32,11 +32,10 @@ namespace GeneX.Security
 
 			IList<Organization> myOrganizations = await GetOrganizationsAsync(user) as IList<Organization>;
 			user.Organizations.AddRange(myOrganizations);
-			var compositeUserRoles = ((Db)this.Context).UserOrganizationRole.Where(m => m.User.Id == user.Id && m.OrganizationRole.OrganizationId == user.ActiveOrganizationId);
+			var compositeUserRoles = ((Db)this.Context).UserOrganizationRole.Include(m=>m.OrganizationRole).Where(m => m.User.Id == user.Id && m.OrganizationRole.OrganizationId == user.ActiveOrganizationId);
 			foreach (UserOrganizationRole cru in compositeUserRoles)
 			{
 				UserRole iur = new UserRole();
-				iur.RoleId = cru.OrganizationRole.RoleId;
 				iur.UserId = user.Id;
 				user.Roles.Add(iur);
 			}
@@ -47,6 +46,10 @@ namespace GeneX.Security
 		public async Task<IList<Organization>> GetOrganizationsAsync(User user)
 		{
 			List<Organization> toRet = new List<Organization>();
+			if (user == null || user.Id == null || user.Id == Guid.Empty)
+			{
+				return null;
+			}
 			var compositeUserRoles = (this.Context as Db).UserOrganizationRole.Where(m => m.User.Id == user.Id)
 				.Include(m => m.OrganizationRole.Organization).ToList();
 			foreach (UserOrganizationRole role in compositeUserRoles)
@@ -54,16 +57,6 @@ namespace GeneX.Security
 				toRet.Add(role.OrganizationRole.Organization);
 			}
 			return await Task.FromResult(toRet.Distinct().ToList());
-		}
-
-		public override async Task<User> FindByNameAsync(string userName)
-		{
-			return await base.FindByNameAsync(userName);
-		}
-
-		public override async Task<User> FindAsync(UserLoginInfo login)
-		{
-			return await base.FindAsync(login);
 		}
 
 		public string GetOrganizationConnectionString(Guid OrganizationId)

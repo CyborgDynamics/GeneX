@@ -27,12 +27,14 @@ namespace GeneX.Web.Controllers
 			return View(ivm);
 		}
 
+		[AllowAnonymous, HttpGet]
 		public ActionResult About()
 		{
 			ViewBag.Message = "Your application description page.";
 			return View();
 		}
 
+		[AllowAnonymous, HttpGet]
 		public ActionResult Contact()
 		{
 			ViewBag.Message = "Your contact page.";

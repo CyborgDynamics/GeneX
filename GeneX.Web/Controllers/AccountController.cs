@@ -125,7 +125,7 @@ namespace GeneX.Web.Controllers
 			//	return View("Error");
 			//}
 			//return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
-			return View("Error");
+			return await Task.FromResult<ActionResult>(View("Error"));
         }
 
         //
@@ -157,7 +157,7 @@ namespace GeneX.Web.Controllers
 			//		return View(model);
 			//}
 
-			return View("Error");
+			return await Task.FromResult<ActionResult>(View("Error"));
         }
 
         //
@@ -321,7 +321,8 @@ namespace GeneX.Web.Controllers
 			//}
 			//var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
 			//var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-			return View(); // SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
+			return await Task.FromResult<ActionResult>(View("Error"));
+			// SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
         //
@@ -333,7 +334,7 @@ namespace GeneX.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View();
+				return await Task.FromResult<ActionResult>(View("Error"));
             }
 
             // TODO: Generate the token and send it
@@ -372,7 +373,7 @@ namespace GeneX.Web.Controllers
 			//		ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
 			//		return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
 			//}
-			return View();
+			return await Task.FromResult<ActionResult>(View("Error"));
         }
 
         //

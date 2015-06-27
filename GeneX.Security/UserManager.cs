@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Owin;
-using System.Threading.Tasks;
+
+
 
 namespace GeneX.Security
 {
@@ -18,7 +20,7 @@ namespace GeneX.Security
 		{
 		}
 
-		public override Task<IdentityResult> CreateAsync(User user, string password)
+		public override  Task<IdentityResult> CreateAsync(User user, string password)
 		{
 			user.Id = Guid.NewGuid();
 			return base.CreateAsync(user, password);
@@ -71,16 +73,15 @@ namespace GeneX.Security
 		/// <returns>OrganizationId</returns>
 		public async Task<Guid?> GetActiveOrganizationAsync(Guid userId)
 		{
-			User user = await Store.FindByIdAsync(userId);
-			return user.ActiveOrganizationId;
+			return (await Store.FindByIdAsync(userId)).ActiveOrganizationId;
 		}
 
 		public string GetOrganizationConnectionString(Guid userId)
 		{
 			User user = this.FindById(userId);
-			if ( user.ActiveOrganizationId.HasValue )
+			if (user.ActiveOrganizationId.HasValue)
 			{
-			return ((UserStore)Store).GetOrganizationConnectionString(user.ActiveOrganizationId.Value);
+				return ((UserStore)Store).GetOrganizationConnectionString(user.ActiveOrganizationId.Value);
 			}
 			return string.Empty;
 		}

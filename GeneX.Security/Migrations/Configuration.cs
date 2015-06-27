@@ -4,15 +4,15 @@ using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNet.Identity;
-using CC.Security;
 
 namespace GeneX.Security.Migrations
 {
-	internal sealed class Configuration : DbMigrationsConfiguration<GeneX.Security.Db>
+	public sealed class Configuration : DbMigrationsConfiguration<GeneX.Security.Db>
 	{
 		public Configuration()
 		{
 			AutomaticMigrationsEnabled = true;
+			ContextKey = "GeneX.Security.GeneXContext";
 		}
 
 		protected override void Seed(GeneX.Security.Db context)
@@ -20,7 +20,7 @@ namespace GeneX.Security.Migrations
 			SeedData(context);
 		}
 
-		private void SeedData(GeneX.Security.Db context)
+		public void SeedData(GeneX.Security.Db context)
 		{
 			SeedOrganizations(context);
 			SeedRoles(context);
@@ -41,7 +41,7 @@ namespace GeneX.Security.Migrations
 			base.Seed(context);
 		}
 
-		private void SeedOrganizations(GeneX.Security.Db context)
+		public void SeedOrganizations(GeneX.Security.Db context)
 		{
 			context.Organization.AddOrUpdate(it => it.OrganizationId,
 			   new Organization()
@@ -53,7 +53,7 @@ namespace GeneX.Security.Migrations
 			context.SaveChanges();
 		}
 
-		private void SeedRoles(GeneX.Security.Db context)
+		public void SeedRoles(GeneX.Security.Db context)
 		{
 			context.Roles.AddOrUpdate(it => it.Id,
 				new Role()

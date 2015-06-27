@@ -10,9 +10,25 @@ using GeneX.Web.Models;
 
 namespace GeneX.Web.Controllers
 {
+	[Authorize]
 	public class GenomeController : Controller
 	{
-		[HttpGet, Authorize]
+		private string ServerMapPath
+		{
+			get
+			{
+				if (Server != null)
+				{
+					return Server.MapPath("~/App_Data/uploads");
+				}
+				else
+				{
+					return string.Empty;
+				}
+			}
+		}
+
+		[HttpGet]
 		public ActionResult Index(Guid? id)
 		{
 			GenomeViewModel gvm = new GenomeViewModel();
@@ -22,11 +38,14 @@ namespace GeneX.Web.Controllers
 				using (GeneXContext context = new GeneXContext())
 				{
 					Genome g = context.Genome.Where(m => m.GenomeId == id.Value).FirstOrDefault();
-					gvm.Id = g.GenomeId;
-					gvm.Name = g.Name;
-					gvm.SNPs = context.SNP.Where(m => m.GenomeId == id.Value).Take(100).ToList();
+					if (g != null)
+					{
+						gvm.Id = g.GenomeId;
+						gvm.Name = g.Name;
+					}
 				}
-				FileInfo fi = new FileInfo(Path.Combine(Server.MapPath("~/App_Data/uploads"), id.ToString() + ".txt"));
+
+				FileInfo fi = new FileInfo(Path.Combine(ServerMapPath, id.ToString() + ".txt"));
 				if (fi.Exists)
 				{
 					gvm.DataFileExists = true;
@@ -37,13 +56,57 @@ namespace GeneX.Web.Controllers
 			return View(gvm);
 		}
 
+		[HttpGet]
+		//[Authorize(Roles = "ReadGenome")]
+		public JsonResult PartialIndex(Guid? id, int page, int pageSize)
+		{
+			JsonResult jr = new JsonResult();
+			pageSize = pageSize == 100 ? 101 : pageSize;
+			using (GeneXContext context = new GeneXContext())
+			{
+				IQueryable<SNPDTO> query = context.SNP
+						.Where(m => m.GenomeId == id.Value)
+						.Join(context.SNPedia,
+						c => c.ClusterId,
+						d => d.ClusterId,
+						(c, d) => new SNPDTO()
+						{
+							ClusterId = c.ClusterId,
+							ChromosomeType = c.ChromosomeType,
+							Chromosome = c.Chromosome,
+							Allele1 = c.Allele1,
+							Allele2 = c.Allele2,
+							SNPId = c.SNPId,
+							Position = c.Position,
+							Notes = d.Notes
+						}).Where(m => !(m.Notes == null || m.Notes.Trim() == string.Empty))
+						.OrderBy(m => m.Chromosome)
+						.ThenBy(m => m.Position)
+									.Skip(page * pageSize)
+									.Take(pageSize);
+
+
+				jr.Data = query.ToList();
+			}
+			jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+			return jr;
+		}
+		
+
 		[HttpPost]
+		// TODO: Fix the Calls to include Either FormValues Dictionary or DTO.
 		public ActionResult Index(Guid? id, HttpPostedFileBase file)
 		{
+			if (file == null || file.ContentLength == 0 || file.ContentType == null || string.IsNullOrEmpty(file.FileName) || file.InputStream == null)
+			{
+				this.ModelState.AddModelError("PostedFile", "Must attach file.");
+				return View();
+			}
+
 			if (file.ContentLength > 0)
 			{
 				string fileName = Path.GetFileName(file.FileName);
-				string path = Path.Combine(Server.MapPath("~/App_Data/uploads"), id.ToString() + ".txt");
+				string path = Path.Combine(ServerMapPath, id.ToString() + ".txt");
 				file.SaveAs(path);
 
 				List<SNP> snps = new List<SNP>();
@@ -63,7 +126,7 @@ namespace GeneX.Web.Controllers
 
 						string tmp = parsed[0];
 						SNP snp = context.SNP.Where(m => m.ClusterId == tmp && m.GenomeId == id.Value).FirstOrDefault();
-				
+
 						int chromosome = 0;
 						string chromosomeType;
 						if (parsed[1].ToUpper().Equals("X") || parsed[1].ToUpper().Equals("Y"))
@@ -101,7 +164,7 @@ namespace GeneX.Web.Controllers
 							snp.ChromosomeType = chromosomeType;
 							snp.Genotype = parsed[3];
 						}
-						
+
 						++i;
 						if (i % 1000 == 0)
 						{
@@ -135,6 +198,11 @@ namespace GeneX.Web.Controllers
 				g.Name = Name;
 				context.Genome.Add(g);
 				context.SaveChanges();
+
+				GenomePermission gp = new GenomePermission();
+				gp.GenomeId = g.GenomeId;
+				gp.GenomePermissionId = Guid.NewGuid();
+				//gp.OrganizationId = User.Identity.
 			}
 			return RedirectToAction("Index", "Home");
 		}

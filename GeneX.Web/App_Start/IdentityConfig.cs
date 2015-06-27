@@ -12,6 +12,8 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using GeneX.Web.Models;
 
+using GeneX.Security;
+
 namespace GeneX.Web
 {
     public class EmailService : IIdentityMessageService
@@ -31,4 +33,22 @@ namespace GeneX.Web
             return Task.FromResult(0);
         }
     }
+
+	public class ApplicationSignInManager : SignInManager<User, Guid>
+	{
+		public ApplicationSignInManager(UserManager userManager, IAuthenticationManager authenticationManager)
+			: base(userManager, authenticationManager)
+		{
+		}
+
+		public override Task<ClaimsIdentity> CreateUserIdentityAsync(User user)
+		{
+			return user.GenerateUserIdentityAsync((UserManager)UserManager);
+		}
+
+		public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
+		{
+			return new ApplicationSignInManager(context.GetUserManager<UserManager>(), context.Authentication);
+		}
+	}
 }

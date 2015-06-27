@@ -20,7 +20,7 @@ namespace GeneX.Model
 		public DbSet<GenomePermission> GenomePermission { get; set; }
 		public DbSet<Permission> Permission { get; set; }
 		public DbSet<SNP> SNP { get; set; }
-		
+		public DbSet<SNPedia> SNPedia { get; set; }
 		
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -32,8 +32,7 @@ namespace GeneX.Model
 			modelBuilder.Entity<Genome>().ToTable("Genome", "Model");
 			modelBuilder.Entity<GenomePermission>().ToTable("GenomePermission", "Model");
 			modelBuilder.Entity<Permission>().ToTable("Permission", "Model");
-
-			//modelBuilder.Entity<GenomePermission>().HasRequired(m => m.UserId).WithMany().HasForeignKey(m => m.UserId);
+			modelBuilder.Entity<SNPedia>().ToTable("SNPedia", "Reference");
 		}
 	}
 }

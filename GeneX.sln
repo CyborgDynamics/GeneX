@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneX.Web", "GeneX.Web\GeneX.Web.csproj", "{036A6A00-EC58-428F-B62C-B0249EC40D06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneX.Web.Tests", "GeneX.Web.Tests\GeneX.Web.Tests.csproj", "{C0E64854-6360-4E47-8471-3707C923084F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneX.Web.Test", "GeneX.Web.Test\GeneX.Web.Test.csproj", "{C0E64854-6360-4E47-8471-3707C923084F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneX.Model", "GeneX.Model\GeneX.Model.csproj", "{B8983B97-36C2-41D6-B27A-A3206DC68981}"
 EndProject
@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2CB246
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneX.Security.Test", "GeneX.Security.Test\GeneX.Security.Test.csproj", "{3F94D34B-8C73-4A8F-B72D-DF5EE956B6B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneX.Model.Test", "GeneX.Model.Test\GeneX.Model.Test.csproj", "{B5BAF278-7293-4144-983B-5C75FF8A9A21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,12 @@ Global
 		{7E364229-0EED-4873-8BA8-963F18A280FD}.Development|Any CPU.Build.0 = Development|Any CPU
 		{7E364229-0EED-4873-8BA8-963F18A280FD}.Production|Any CPU.ActiveCfg = Production|Any CPU
 		{7E364229-0EED-4873-8BA8-963F18A280FD}.Production|Any CPU.Build.0 = Production|Any CPU
+		{3F94D34B-8C73-4A8F-B72D-DF5EE956B6B7}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{3F94D34B-8C73-4A8F-B72D-DF5EE956B6B7}.Development|Any CPU.Build.0 = Development|Any CPU
+		{3F94D34B-8C73-4A8F-B72D-DF5EE956B6B7}.Production|Any CPU.ActiveCfg = Production|Any CPU
+		{B5BAF278-7293-4144-983B-5C75FF8A9A21}.Development|Any CPU.ActiveCfg = Development|Any CPU
+		{B5BAF278-7293-4144-983B-5C75FF8A9A21}.Development|Any CPU.Build.0 = Development|Any CPU
+		{B5BAF278-7293-4144-983B-5C75FF8A9A21}.Production|Any CPU.ActiveCfg = Production|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

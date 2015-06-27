@@ -4,49 +4,53 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular-loader.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.0/ui-bootstrap.js"></script>
+
+<script src="~/Scripts/AngularControllers/GenomeController.js"></script>
 <div>
 	<h1>@(Model.Name)</h1>
-	@{
-		if (Model.DataFileExists)
-		{
-			<form action="" method="post" enctype="multipart/form-data">
-				<div>
-					<table>
-						<thead>
-							<tr>
-								<td>Cluster Id</td>
-								<td>Chromosome</td>
-								<td>Position</td>
-								<td>Genotype</td>
-							</tr>
-						</thead>
-						<tbody>
-							@{
-			foreach (GeneX.Model.SNP snp in Model.SNPs)
-			{
-				<tr>
-							<td>@(snp.ClusterId)</td>
-					<td>@(snp.Chromosome)</td>
-					<td>@(snp.Position)</td>
-					<td>@(snp.Genotype)</td>
-							</tr>
-			}
-							}
-						</tbody>
-					</table>
-				</div>
-			</form>
-			<div><span>Upload Updated File</span></div>
-		}
-		else
-		{
-			<div><span>Upload Gene File</span></div>
-		}
-		<form action="" method="post" enctype="multipart/form-data">
-			@(Html.HiddenFor(m => m.Id))
-			<label for="file">Filename:</label>
-			<input type="file" name="file" id="file" />
-			<input type="submit" />
-		</form>
-}
+
+	<div xmlns:ng="http://angularjs.org" ng-app="genomes">
+		<div class="row-fluid" ng-controller="GenomeController" ng-init="modelId='@(Model.Id)'">
+			<table class="Genome">
+				<thead>
+					<tr>
+						<th>Cluster Id</th>
+						<th>Chromosome</th>
+						<th>Position</th>
+						<th>Genotype</th>
+						<th>Summary</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="SNPDTO in filteredGenomes">
+						<td>{{SNPDTO.ClusterId}}</td>
+						<td>{{SNPDTO.Chromosome}}</td>
+						<td>{{SNPDTO.Position}}</td>
+						<td>{{SNPDTO.Allele1}}{{SNPDTO.Allele2}}</td>
+						<td>{{SNPDTO.Notes}}</td>
+					</tr>
+
+
+				</tbody>
+			</table>
+			<pagination ng-model="currentPage"
+						total-items="filteredGenomes.length"
+						max-size="maxSize"
+						boundary-links="true">
+			</pagination>
+		</div>
+	</div>
+
+	<div><span>Upload File</span></div>
+
+	<form action="" method="post" enctype="multipart/form-data">
+		@(Html.HiddenFor(m => m.Id))
+		<label for="file">Filename:</label>
+		<input type="file" name="file" id="file" />
+		<input type="submit" />
+	</form>
 </div>

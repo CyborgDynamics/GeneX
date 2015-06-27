@@ -31,16 +31,21 @@ namespace GeneX.Security
 
 	public class UserClaim : IdentityUserClaim<Guid> { }
 
-	
 	public class Db : IdentityDbContext<User, Role, Guid, UserLogin, UserRole, UserClaim>
 	{
-		public DbSet<Organization> Organization { get; set; }
-		public DbSet<OrganizationRole> OrganizationRole { get; set; }
-		public DbSet<UserOrganizationRole> UserOrganizationRole { get; set; }
-		public DbSet<UserRole> UserRole { get; set; }
+		public virtual DbSet<Organization> Organization { get; set; }
+		public virtual DbSet<OrganizationRole> OrganizationRole { get; set; }
+		public virtual DbSet<OrganizationRoleItem> OrganizationRoleItem { get; set; }
+		public virtual DbSet<UserOrganizationRole> UserOrganizationRole { get; set; }
+		public virtual DbSet<UserRole> UserRole { get; set; }
 
 		public Db()
 			: base("GeneXContext")
+		{
+		}
+
+		public Db(string connectionString)
+			: base(connectionString)
 		{
 		}
 
@@ -49,6 +54,7 @@ namespace GeneX.Security
 			base.OnModelCreating(modelBuilder);
 
 			modelBuilder.Conventions.Remove<System.Data.Entity.ModelConfiguration.Conventions.PluralizingTableNameConvention>();
+			
 			modelBuilder.Entity<User>().ToTable("User", "Security").Property(p => p.Id).HasColumnName("UserId");
 			modelBuilder.Entity<UserRole>().ToTable("UserRole", "Security");
 			modelBuilder.Entity<UserLogin>().ToTable("UserLogin", "Security");
@@ -56,10 +62,10 @@ namespace GeneX.Security
 			modelBuilder.Entity<Role>().ToTable("Role", "Security");
 			modelBuilder.Entity<Organization>().ToTable("Organization", "Security");
 			modelBuilder.Entity<OrganizationRole>().ToTable("OrganizationRole", "Security");
+			modelBuilder.Entity<OrganizationRoleItem>().ToTable("OrganizationRoleItem", "Security");
 			modelBuilder.Entity<UserOrganizationRole>().ToTable("UserOrganizationRole", "Security");
 
-			//modelBuilder.Entity<Organization>().HasMany(u => u.).WithRequired(w => w.Organization);
-			//modelBuilder.Entity<OrganizationRole>().HasMany(u => u.Organization).WithRequired(w => w.OrganizationRole);
+			modelBuilder.Entity<OrganizationRole>().HasMany<OrganizationRoleItem>(u => u.OrganizationRoleItems).WithRequired(m => m.OrganizationRole);
 
 			modelBuilder.Entity<User>().HasOptional(u => u.CreatedBy).WithMany().HasForeignKey(u => u.CreatedByUserId).WillCascadeOnDelete(false);
 			modelBuilder.Entity<User>().HasOptional(u => u.UpdatedBy).WithMany().HasForeignKey(u => u.UpdatedByUserId).WillCascadeOnDelete(false);
@@ -68,9 +74,9 @@ namespace GeneX.Security
 			modelBuilder.Entity<Organization>().HasOptional(u => u.CreatedBy).WithMany().HasForeignKey(u => u.CreatedByUserId).WillCascadeOnDelete(false);
 			modelBuilder.Entity<OrganizationRole>().HasOptional(u => u.CreatedBy).WithMany().HasForeignKey(u => u.CreatedByUserId).WillCascadeOnDelete(false);
 
-			//modelBuilder.Entity<UserSiteRole>()
-			//	.HasRequired(a => a.SiteRole)
-			//	.WithMany(a => a.UserSiteRoles)
+			//modelBuilder.Entity<UserOrganizationRole>()
+			//	.HasRequired(a => a.OrganizationRole)
+			//	.WithMany(a => a.)
 			//	.WillCascadeOnDelete(true);
 
 			//modelBuilder.Entity<UserSiteRole>()

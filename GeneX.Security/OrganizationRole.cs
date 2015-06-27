@@ -12,16 +12,12 @@ namespace GeneX.Security
 	{
 		[Key]
 		public Guid OrganizationRoleId { get; set; }
-
+		
 		public Guid OrganizationId { get; set; }
-
 		[ForeignKey("OrganizationId")]
 		public Organization Organization { get; set; }
 
-		public Guid RoleId { get; set; }
-
-		[ForeignKey("RoleId")]
-		public Role Role { get; set; }
+		public List<OrganizationRoleItem> OrganizationRoleItems { get; set; }
 
 		[MaxLength(100)]
 		[Required]
