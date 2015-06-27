@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using GeneX.Model;
 using GeneX.Web.Models;
+using GeneX.Web.Provider;
 
 namespace GeneX.Web.Controllers
 {
@@ -202,7 +203,11 @@ namespace GeneX.Web.Controllers
 				GenomePermission gp = new GenomePermission();
 				gp.GenomeId = g.GenomeId;
 				gp.GenomePermissionId = Guid.NewGuid();
-				//gp.OrganizationId = User.Identity.
+				gp.OrganizationId = User.Identity.GetUserGroupId();
+				gp.UserId = User.Identity.GetUserGuid();
+				gp.PermissionId = Constants.Permissions.Ids.Owner;
+				context.GenomePermission.Add(gp);
+				context.SaveChanges();
 			}
 			return RedirectToAction("Index", "Home");
 		}

@@ -12,8 +12,6 @@ namespace GeneX.Security
 		{
 			public static class Ids
 			{
-				//Read, Create, Edit
-				//TODO: Delete, Append, AppendTo, Assign??
 				public static readonly Guid SuperAdministrator = new Guid("{726E9BEF-78D4-4DF6-82DF-D1EF9176ABA5}");
 				public static readonly Guid Administrator = new Guid("{B8BFC16D-9F4B-403B-AE36-590E618EAB62}");
 
@@ -30,11 +28,6 @@ namespace GeneX.Security
 
 				public static readonly Guid AssignUserOrganizationRole = new Guid("{13D5AC58-9FFD-424F-8DCC-DE8ED3821A95}");
 
-				public static readonly Guid ReadVoterData = new Guid("{D5A16946-47D7-4788-B856-80CEE59DA480}");
-
-				public static readonly Guid ReadVote = new Guid("{40DEE5F3-9748-4573-81A8-66CA9ED6389C}");
-
-				public static readonly Guid ReadVoterInteraction = new Guid("{1FE8E919-8C89-42E4-80DE-04A2BA0064AF}");
 			}
 
 			public static class Names
@@ -57,14 +50,6 @@ namespace GeneX.Security
 
 				public const string AssignUserOrganizationRole = "AssignUserOrganizationRole";
 
-				public const string ReadVoterData = "ReadVoterData";
-
-				public const string ReadVote = "ReadVote";
-
-				public const string ReadVoterInteraction = "ReadVoterInteraction";
-
-				public const string ReadWalklist = "ReadWalklist";
-
 			}
 
 			public static class Descriptions
@@ -84,12 +69,6 @@ namespace GeneX.Security
 				public const string WriteOrganizationRole = "Write Organization Role";
 
 				public const string AssignUserOrganizationRole = "Assign User Organization Role";
-
-				public const string ReadVoterData = "Read Voter Data";
-
-				public const string ReadVote = "Read Vote";
-
-				public const string ReadVoterInteraction = "Read Voter Interaction";
 			}
 		}
 	}

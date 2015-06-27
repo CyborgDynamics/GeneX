@@ -10,12 +10,11 @@ namespace GeneX.Web.Provider
 {
 	public static class Extensions
 	{
-		//
-		// Summary:
-		//     Return the user id as a Guid
-		//
-		// Parameters:
-		//   identity:
+		/// <summary>
+		/// Extracts NameIdentifier from Claims Identity
+		/// </summary>
+		/// <param name="identity">IIdentity</param>
+		/// <returns>Guid</returns>
 		public static Guid GetUserGuid(this IIdentity identity)
 		{
 			string temp = string.Empty;
@@ -26,7 +25,27 @@ namespace GeneX.Web.Provider
 			ClaimsIdentity identity1 = identity as ClaimsIdentity;
 			if (identity1 != null)
 			{
-				temp = IdentityExtensions.FindFirstValue(identity1, "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+				temp = IdentityExtensions.FindFirstValue(identity1, ClaimTypes.NameIdentifier);
+			}
+			return new Guid(temp);
+		}
+
+		/// <summary>
+		/// Returns Group SID (OrganizationID)
+		/// </summary>
+		/// <param name="identity">IIdentity</param>
+		/// <returns>Group Sid</returns>
+		public static Guid GetUserGroupId(this IIdentity identity)
+		{
+			string temp = string.Empty;
+			if (identity == null)
+			{
+				throw new ArgumentNullException("identity");
+			}
+			ClaimsIdentity identity1 = identity as ClaimsIdentity;
+			if (identity1 != null)
+			{
+				temp = IdentityExtensions.FindFirstValue(identity1, ClaimTypes.GroupSid);
 			}
 			return new Guid(temp);
 		}

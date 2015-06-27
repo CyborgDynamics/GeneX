@@ -18,7 +18,7 @@ namespace GeneX.Model
 			public static class Names
 			{
 				public const string Appender = ",";
-				public const string Owner = "SuperAdministrator";
+				public const string Owner = "Owner";
 			}
 
 			public static class Descriptions

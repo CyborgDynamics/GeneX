@@ -18,30 +18,16 @@ namespace GeneX.Web.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        //private ApplicationSignInManager _signInManager;
 		private UserManager _userManager;
 
         public AccountController()
         {
         }
 
-		public AccountController(UserManager userManager)//, ApplicationSignInManager signInManager)
+		public AccountController(UserManager userManager)
         {
             UserManager = userManager;
-            //SignInManager = signInManager;
         }
-
-		//public ApplicationSignInManager SignInManager
-		//{
-		//	get
-		//	{
-		//		return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-		//	}
-		//	private set 
-		//	{ 
-		//		_signInManager = value; 
-		//	}
-		//}
 
 		public UserManager UserManager
         {
@@ -55,8 +41,6 @@ namespace GeneX.Web.Controllers
             }
         }
 
-        //
-        // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -64,8 +48,6 @@ namespace GeneX.Web.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -82,13 +64,15 @@ namespace GeneX.Web.Controllers
 				return View(model);
 			}
 
-			var claims = new List<Claim>() { new Claim(ClaimTypes.Name, model.Email), new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()) };
-//			List<Claim> _claims = new List<Claim>();
-//_claims.AddRange(new List<Claim>
-//{
-//	new Claim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier", model.Email),
-//	new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", model.Email)
-//});
+			var claims = new List<Claim>() 
+			{ 
+				// http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier
+				new Claim(ClaimTypes.Name, model.Email), 
+				// http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider
+				new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+				// http://schemas.microsoft.com/ws/2008/06/identity/claims/groupsid
+				new Claim(ClaimTypes.GroupSid, user.ActiveOrganizationId.ToString())
+			};
 
 			var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
 			var ctx = Request.GetOwinContext();
@@ -114,8 +98,6 @@ namespace GeneX.Web.Controllers
 			//}
         }
 
-        //
-        // GET: /Account/VerifyCode
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
@@ -128,8 +110,6 @@ namespace GeneX.Web.Controllers
 			return await Task.FromResult<ActionResult>(View("Error"));
         }
 
-        //
-        // POST: /Account/VerifyCode
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
