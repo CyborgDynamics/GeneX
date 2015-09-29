@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -106,10 +107,21 @@ namespace GeneX.Web.Controllers
 
 			if (file.ContentLength > 0)
 			{
-				string fileName = Path.GetFileName(file.FileName);
 				string path = Path.Combine(ServerMapPath, id.ToString() + ".txt");
-				file.SaveAs(path);
-
+				string fileName = Path.GetFileName(file.FileName);
+				if (fileName.EndsWith(".zip"))
+				{
+					string tempPath = Path.Combine(ServerMapPath, id.ToString() + ".zip");
+					string extractPath = Path.Combine(ServerMapPath, id.ToString());
+					file.SaveAs(tempPath);
+					System.IO.Compression.ZipFile.ExtractToDirectory(tempPath, extractPath);
+					string[] names = Directory.GetFiles(extractPath);
+					if ( names.Length != 1 )
+					{
+						throw new FileLoadException("Zip file must only contain one file.");
+					}
+					System.IO.File.Move(names[0], path);
+				}
 				List<SNP> snps = new List<SNP>();
 				int i = 0;
 				using (StreamReader sr = new StreamReader(path))
