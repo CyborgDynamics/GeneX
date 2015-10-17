@@ -35,7 +35,9 @@ namespace GeneX.Security.Migrations
 				user1 = new User() { Id = Guid.NewGuid(), UserName = "trenton.adams@gmail.com", Email = "trenton.adams@gmail.com" };
 				userManager.Create(user1, "CC2014!");
 				user1.Roles.Add(new UserRole() { RoleId = Constants.Roles.Ids.SuperAdministrator, UserId = user1.Id });
-			}
+				user1.Organizations.Add(new Organization { OrganizationId = new Guid("{D84B39C4-88EA-43C3-BB9E-09F1BB959453}") });
+				user1.ActiveOrganizationId = new Guid("{D84B39C4-88EA-43C3-BB9E-09F1BB959453}");
+            }
 
 			context.SaveChanges();
 			base.Seed(context);

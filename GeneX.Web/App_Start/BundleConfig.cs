@@ -14,8 +14,6 @@ namespace GeneX.Web
 			bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
 						"~/Scripts/jquery.validate*"));
 
-			// Use the development version of Modernizr to develop with and learn from. Then, when you're
-			// ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
 			bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
 						"~/Scripts/modernizr-*"));
 
@@ -23,9 +21,28 @@ namespace GeneX.Web
 					  "~/Scripts/bootstrap.js",
 					  "~/Scripts/respond.js"));
 
+			bundles.Add(new ScriptBundle("~/bundles/morris").Include(
+					  "~/Scripts/morris/morris.min.js",
+					  "~/Scripts/morris/morris-data.js",
+					  "~/Scripts/morris/raphael.min.js"));
+
+			bundles.Add(new ScriptBundle("~/bundles/flot").Include(
+					  "~/Scripts/flot/excanvas.min.js",
+					  "~/Scripts/flot/jquery.*",
+					  "~/Scripts/flot/flot-*"));
+
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 					  "~/Content/bootstrap.css",
 					  "~/Content/site.css"));
+
+			bundles.Add(new StyleBundle("~/Content/morris_css").Include(
+					  "~/Content/Plugins/morris.css"));
+
+			bundles.Add(new StyleBundle("~/Content/sb_admin").Include(
+					  "~/Content/sb-admin.css"));
+
+			bundles.Add(new StyleBundle("~/Content/font_awesome").Include(
+					  "~/Content/Font-awesome/css/font-awesome.min.css"));
 		}
 	}
 }

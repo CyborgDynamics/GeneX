@@ -4,3 +4,4 @@ obj/
 packages/
 *.user
 /Source/GeneX.Web/App_Data/
+/GeneX.Web/App_Data/uploads
