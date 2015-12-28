@@ -120,7 +120,8 @@ namespace GeneX.Security
 		{
 			return await GetUserRoleStore().IsInRoleAsync(await GetUserRoleStore().FindByIdAsync(userId), role);
 		}
-		http://stackoverflow.com/questions/20495249/mvc-5-addtorole-requires-logout-before-it-works
+
+		//http://stackoverflow.com/questions/20495249/mvc-5-addtorole-requires-logout-before-it-works
 		public override Task<ClaimsIdentity> CreateIdentityAsync(User user, string authenticationType)
 		{
 			return base.CreateIdentityAsync(user, authenticationType);
