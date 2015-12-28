@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using Xunit;
 using Moq;
-using GeneX.Security.Test;
-namespace GeneX.Security.UserManager.Test
+namespace GeneX.Security.Test
 {
+	[System.Runtime.InteropServices.Guid("D1786082-ABC7-4F77-A4F9-F5C3920240F0")]
 	public class UserManagerTest : IClassFixture<ContextFixture>
 	{
 		ContextFixture fixture;
@@ -17,7 +13,7 @@ namespace GeneX.Security.UserManager.Test
 			this.fixture = fixture;
 		}
 
-		[Fact(DisplayName = "Can Construct")]
+		[Fact(DisplayName = "User Manager - Can Construct")]
 		void CanConstruct()
 		{
 			// arrange
@@ -31,7 +27,7 @@ namespace GeneX.Security.UserManager.Test
 			Assert.NotNull(um);
 		}
 
-		[Theory, ClassData(typeof(UserIdIndex))]
+		[Theory(DisplayName ="User Manager - Get Organizations"), ClassData(typeof(UserIdIndex))]
 		void GetOrganizationsAsyncDoesNotThrow(Guid id)
 		{
 			//// arrange

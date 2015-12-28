@@ -22,10 +22,18 @@ namespace GeneX.Security.Factories
 			{
 				throw new ArgumentNullException("user");
 			}
-			ClaimsIdentity claimsIdentity = new ClaimsIdentity(authenticationType, this.UserNameClaimType, this.RoleClaimType);
-			claimsIdentity.AddClaim(new Claim(this.UserIdClaimType, this.ConvertIdToString(user.Id), "http://www.w3.org/2001/XMLSchema#string"));
-			claimsIdentity.AddClaim(new Claim(this.UserNameClaimType, user.UserName, "http://www.w3.org/2001/XMLSchema#string"));
-			claimsIdentity.AddClaim(new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", "ASP.NET Identity", "http://www.w3.org/2001/XMLSchema#string"));
+
+			var claims = new List<Claim>()
+			{ 
+				// http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier
+				new Claim(ClaimTypes.Name, user.Email), 
+				// http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider
+				new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+				// http://schemas.microsoft.com/ws/2008/06/identity/claims/groupsid
+				new Claim(ClaimTypes.GroupSid, user.ActiveOrganizationId.ToString())
+			};
+
+			ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie); 
 			if (manager.SupportsUserSecurityStamp)
 			{
 				claimsIdentity.AddClaim(new Claim(this.SecurityStampClaimType, await manager.GetSecurityStampAsync(user.Id).WithCurrentCulture<string>()));

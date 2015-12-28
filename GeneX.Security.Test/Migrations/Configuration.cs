@@ -2,11 +2,8 @@ using System;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.IO;
-using System.Linq;
 
 using Microsoft.AspNet.Identity;
-
-using GeneX.Security;
 
 namespace GeneX.Security.Test.Migrations
 {
@@ -78,7 +75,6 @@ namespace GeneX.Security.Test.Migrations
 			context.OrganizationRoleItem.AddOrUpdate(ori);
 			context.OrganizationRoleItem.AddOrUpdate(ori2);
 			int a = context.SaveChanges();
-			//base.Seed(context);
 		}
 
 		public void SeedOrganizations(DbTest context)

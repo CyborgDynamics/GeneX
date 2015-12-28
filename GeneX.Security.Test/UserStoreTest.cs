@@ -18,7 +18,7 @@ namespace GeneX.Security.Test
 		}
 
 
-		[Fact(DisplayName = "Can Construct")]
+		[Fact(DisplayName = "User Store - Can Construct")]
 		void CanConstruct()
 		{
 			// arrange
@@ -31,7 +31,7 @@ namespace GeneX.Security.Test
 			Assert.NotNull(us);
 		}
 
-		[Theory, ClassData(typeof(UserIdIndex))]
+		[Theory(DisplayName = "User Store - Get Organizations - No Exceptions"), ClassData(typeof(UserIdIndex))]
 		void GetOrganizationsAsyncDoesNotThrow(Guid id)
 		{
 			// arrange
@@ -47,7 +47,7 @@ namespace GeneX.Security.Test
 			Assert.Null(ex.Exception);
 		}
 
-		[Fact]
+		[Fact(DisplayName = "User Store - Get Organizations - Retrieve")]
 		async void GetOrganizationsAsyncReturnsOrganizationsForProperUser()
 		{
 			UserStore us = new UserStore(fixture.Context);
@@ -62,7 +62,7 @@ namespace GeneX.Security.Test
 			Assert.Equal(set.Count(), 1);
 		}
 
-		[Fact]
+		[Fact(DisplayName = "User Store - GetUserRoles - Retrieve")]
 		async void GetUserRoles()
 		{
 			UserStore us = new UserStore(fixture.Context);

@@ -112,20 +112,15 @@ namespace GeneX.Security
 		}
 		private IUserRoleStore<User, Guid> GetUserRoleStore()
 		{
-			//IUserRoleStore<User, Guid> userRoleStore = this.Store as IUserRoleStore<User, Guid>;
-			return new UserRoleStore();
-			//if (userRoleStore == null)
-			//{
-			//	throw new NotSupportedException("Store is not UserRoleStore<User,Guid>");
-			//}
-			//return userRoleStore;
+			IUserRoleStore<User, Guid> userRoleStore = this.Store as IUserRoleStore<User, Guid>;
+			return userRoleStore;
 		}
 
-		public override Task<bool> IsInRoleAsync(Guid userId, string role)
+		public async override Task<bool> IsInRoleAsync(Guid userId, string role)
 		{
-			return base.IsInRoleAsync(userId, role);
+			return await GetUserRoleStore().IsInRoleAsync(await GetUserRoleStore().FindByIdAsync(userId), role);
 		}
-
+		http://stackoverflow.com/questions/20495249/mvc-5-addtorole-requires-logout-before-it-works
 		public override Task<ClaimsIdentity> CreateIdentityAsync(User user, string authenticationType)
 		{
 			return base.CreateIdentityAsync(user, authenticationType);

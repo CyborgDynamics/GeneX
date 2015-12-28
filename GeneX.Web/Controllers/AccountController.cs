@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -64,17 +62,8 @@ namespace GeneX.Web.Controllers
 				return View(model);
 			}
 
-			var claims = new List<Claim>() 
-			{ 
-				// http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier
-				new Claim(ClaimTypes.Name, model.Email), 
-				// http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider
-				new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-				// http://schemas.microsoft.com/ws/2008/06/identity/claims/groupsid
-				new Claim(ClaimTypes.GroupSid, user.ActiveOrganizationId.ToString())
-			};
-
-			var identity = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+			var factory = new GeneX.Security.Factories.ClaimsIdentityFactory();
+			var identity = await factory.CreateAsync(this.UserManager, user, "Password");
 			var ctx = Request.GetOwinContext();
 			var authenticationManager = ctx.Authentication;
 			authenticationManager.SignIn(identity);

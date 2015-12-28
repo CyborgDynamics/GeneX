@@ -27,7 +27,7 @@ namespace GeneX.Web.Controllers
 			}
 		}
 		// GET: Admin
-		[Authorize(Roles ="Any")]
+		[Authorize(Roles ="Administrator")]
 		public ActionResult Index()
 		{
 			return View();

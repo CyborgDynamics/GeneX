@@ -16,13 +16,18 @@ namespace GeneX.Web.Controllers
 			IndexViewModel ivm = new IndexViewModel();
 			using (GeneXContext cs = new GeneXContext())
 			{
-				string id = ((System.Security.Claims.ClaimsPrincipal)this.User).Claims.Where(m => m.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").FirstOrDefault().Value;
-				List<Guid> genomeIds = (from gp in cs.GenomePermission where gp.UserId == new Guid(id) && gp.PermissionId == Model.Constants.Permissions.Ids.Owner select gp.GenomeId).ToList();
-				List<Genome> results = (from g in cs.Genome where genomeIds.Contains(g.GenomeId) select g).ToList();
-				foreach (Genome g in results )
+				var claim = ((System.Security.Claims.ClaimsPrincipal)this.User).Claims.Where(m => m.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").FirstOrDefault();
+				if (claim != null)
 				{
-					ivm.Genomes.Add(g.GenomeId, g.Name);
+					string id = claim.Value;
+					List<Guid> genomeIds = (from gp in cs.GenomePermission where gp.UserId == new Guid(id) && gp.PermissionId == Model.Constants.Permissions.Ids.Owner select gp.GenomeId).ToList();
+					List<Genome> results = (from g in cs.Genome where genomeIds.Contains(g.GenomeId) select g).ToList();
+					foreach (Genome g in results)
+					{
+						ivm.Genomes.Add(g.GenomeId, g.Name);
+					}
 				}
+
 			}
 			return View(ivm);
 		}

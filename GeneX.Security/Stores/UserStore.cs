@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin;
-using Owin;
 using System.Threading.Tasks;
+
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.SqlClient;
 
 namespace GeneX.Security
 {
@@ -18,43 +16,25 @@ namespace GeneX.Security
 			FROM Security.UserOrganizationRole   AS SUOR
 			INNER JOIN  Security.OrganizationRole AS  SOR ON SUOR.OrganizationRoleId = SOR.OrganizationRoleId
 			INNER JOIN  Security.OrganizationRoleItem AS  SORI ON SOR.OrganizationRoleId = SORI.OrganizationRoleId
+			INNER JOIN  Security.Role AS R ON SORI.RoleId = R.Id
 			WHERE SOR.OrganizationId = @OrgId
-			AND SORI.RoleId = @RoleId
+			AND R.RoleId = @RoleName
 			AND SUOR.UserId = @UserId";
+
+		private readonly string OrganizationListRolesSQL = @"
+			SELECT R.Name
+				FROM		Security.UserOrganizationRole	AS	SUOR 
+				INNER JOIN	Security.OrganizationRole		AS	SOR		ON SUOR.OrganizationRoleId = SOR.OrganizationRoleId
+				INNER JOIN	Security.OrganizationRoleItem	AS	SORI	ON SOR.OrganizationRoleId = SORI.OrganizationRoleId
+				INNER JOIN Security.Role AS R ON R.Id = RoleId
+				WHERE	SOR.OrganizationId = @OrgId 
+				AND		SUOR.UserId = @UserId
+			";
 
 		public UserStore(Db context)
 			: base(context)
 		{
 		}
-
-		//protected override async Task<User> GetUserAggregateAsync(System.Linq.Expressions.Expression<Func<User, bool>> filter)
-		//{
-		//	User user = await Users.Include(u => u.Roles)
-		//		.Include(u=>u.Logins)
-		//		.Include(u=>u.Claims)
-		//		.FirstOrDefaultAsync(filter);
-
-		//	if (user == null)
-		//	{
-		//		return null;
-		//	}
-
-		//	IList<Organization> myOrganizations = await GetOrganizationsAsync(user) as IList<Organization>;
-		//	user.Organizations.AddRange(myOrganizations);
-		//	var compositeUserRoles = ((Db)this.Context).UserOrganizationRole.Include(m=>m.OrganizationRole).Where(m => m.User.Id == user.Id && m.OrganizationRole.OrganizationId == user.ActiveOrganizationId);
-		//	foreach (UserOrganizationRole cru in compositeUserRoles)
-		//	{
-		//		UserRole iur = new UserRole();
-		//		iur.RoleId = cru.OrganizationRoleId;
-		//		iur.UserId = user.Id;
-		//		if (!user.Roles.Contains(iur))
-		//		{
-		//			user.Roles.Add(iur);
-		//		}
-		//	}
-
-		//	return user;
-		//}
 
 		public async Task<IList<Organization>> GetOrganizationsAsync(User user)
 		{
@@ -91,24 +71,21 @@ namespace GeneX.Security
 
 		private async Task<bool> IsInOrganizationRoleAsync(User user, string rolename)
 		{
-			List<Guid> result = await (this.Context as Db).Database.SqlQuery<Guid>(OrganizationRoleSQL, user.Id, user.ActiveOrganizationId, rolename).ToListAsync();
+			SqlParameter OrgId = new SqlParameter("OrgId", user.ActiveOrganizationId);
+			SqlParameter UserId = new SqlParameter("UserId", user.Id);
+			SqlParameter RoleName = new SqlParameter("RoleName", rolename);
+			List<Guid> result = await (this.Context as Db).Database.SqlQuery<Guid>(OrganizationRoleSQL, OrgId, UserId, RoleName).ToListAsync();
 			bool exists = result.FirstOrDefault() == null ? false : true;
 			return exists;
 		}
 
-		private readonly string OrganizationListRolesSQL = @"
-			SELECT R.Name
-				FROM		Security.UserOrganizationRole	AS	SUOR 
-				INNER JOIN	Security.OrganizationRole		AS	SOR		ON SUOR.OrganizationRoleId = SOR.OrganizationRoleId
-				INNER JOIN	Security.OrganizationRoleItem	AS	SORI	ON SOR.OrganizationRoleId = SORI.OrganizationRoleId
-				INNER JOIN Security.Role AS R ON R.Id = RoleId
-				WHERE	SOR.OrganizationId = @OrgId 
-				AND		SUOR.UserId = @UserId
-			";
+		
 
 		public async Task<IList<string>> GetOrganizationRolesAsync(User user)
 		{
-			return await (this.Context as Db).Database.SqlQuery<string>(OrganizationListRolesSQL, user.Id, user.ActiveOrganizationId).ToListAsync();
+			SqlParameter OrgId = new SqlParameter("OrgId", user.ActiveOrganizationId);
+			SqlParameter UserId = new SqlParameter("UserId", user.Id);
+			return await (this.Context as Db).Database.SqlQuery<string>(OrganizationListRolesSQL, OrgId, UserId).ToListAsync();
 		}
 	}
 }
