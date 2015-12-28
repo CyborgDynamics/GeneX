@@ -3,42 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
-
-
-using GeneX.Security;
-using GeneX.Security.TestExtensions;
 using Moq;
-using System.Data.SqlClient;
-using System.Configuration;
-using System.Data.Entity.Migrations;
 
 namespace GeneX.Security.Test
 {
-	public class ContextFixture : IDisposable
-	{
-		public DbTest Context { get; set; }
-		public ContextFixture()
-		{
-			Database.SetInitializer<DbTest>(new DropCreateDatabaseAlways<DbTest>());
-			Context = new DbTest();
-			Context.Database.Initialize(true);
-			GeneX.Security.Test.Migrations.Configuration configuration = new GeneX.Security.Test.Migrations.Configuration();
-			configuration.ContextType = typeof(DbTest);
-			configuration.SeedData(Context);
-			//
-			//var migrator = new DbMigrator(configuration);
-			//migrator.Update();
-		}
-
-		public void Dispose()
-		{
-			Context.Dispose();
-		}
-	}
-
 	public class UserStoreTest : IClassFixture<ContextFixture>
 	{
 		ContextFixture fixture;
@@ -82,7 +51,7 @@ namespace GeneX.Security.Test
 		async void GetOrganizationsAsyncReturnsOrganizationsForProperUser()
 		{
 			UserStore us = new UserStore(fixture.Context);
-			UserManager um = new UserManager(us);
+			Security.UserManager um = new Security.UserManager(us);
 			User u = await um.FindByEmailAsync("trenton.adams@gmail.com");
 
 			// act
@@ -92,9 +61,44 @@ namespace GeneX.Security.Test
 			Assert.NotNull(set);
 			Assert.Equal(set.Count(), 1);
 		}
+
+		[Fact]
+		async void GetUserRoles()
+		{
+			UserStore us = new UserStore(fixture.Context);
+			UserManager um = new UserManager(us);
+			User u = await um.FindByEmailAsync("trenton.adams@gmail.com");
+
+			// act
+			var set = u.Roles;
+
+			// assert
+			Assert.NotNull(set);
+			Assert.Equal(set.Count(), 1);
+		}
+
+	}
+	public class ContextFixture : IDisposable
+	{
+		public DbTest Context { get; set; }
+		public ContextFixture()
+		{
+			Database.SetInitializer<DbTest>(new DropCreateDatabaseAlways<DbTest>());
+			Context = new DbTest();
+			Context.Database.Initialize(true);
+			GeneX.Security.Test.Migrations.Configuration configuration = new GeneX.Security.Test.Migrations.Configuration();
+			configuration.ContextType = typeof(DbTest);
+			configuration.SeedData(Context);
+
+		}
+
+		public void Dispose()
+		{
+			Context.Dispose();
+		}
 	}
 
-	public class UserIdIndex : IEnumerable<object[]>
+	internal class UserIdIndex : IEnumerable<object[]>
 	{
 		private readonly List<object[]> _data = new List<object[]>
 		{

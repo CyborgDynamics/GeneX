@@ -91,5 +91,26 @@ namespace GeneX.Security
 				return false;
 			}
 		}
+
+		public override ICollection<UserRole> Roles
+		{
+			get
+			{
+				return base.Roles;
+			}
+		}
+
+		//public async void AddOrganizationRole(UserManager manager, OrganizationRole role)
+		//{
+		//	//manager.AddToRoleAsync
+		//	//var compositeUserRoles = ((Db)this.Context).UserOrganizationRole.Include(m => m.OrganizationRole).Where(m => m.User.Id == user.Id && m.OrganizationRole.OrganizationId == user.ActiveOrganizationId);
+
+		//	//foreach (UserOrganizationRole cru in compositeUserRoles)
+		//	//{
+		//	//	UserRole iur = new UserRole();
+		//	//	iur.UserId = user.Id;
+		//	//	user.Roles.Add(iur);
+		//	//}
+		//}
 	}    
 }

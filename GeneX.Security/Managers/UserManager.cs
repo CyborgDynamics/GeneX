@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using Owin;
-
-
+using System.Globalization;
+using System.Data.Entity.Utilities;
+using System.Security.Claims;
 
 namespace GeneX.Security
 {
@@ -20,7 +17,7 @@ namespace GeneX.Security
 		{
 		}
 
-		public override  Task<IdentityResult> CreateAsync(User user, string password)
+		public override Task<IdentityResult> CreateAsync(User user, string password)
 		{
 			user.Id = Guid.NewGuid();
 			return base.CreateAsync(user, password);
@@ -85,5 +82,60 @@ namespace GeneX.Security
 			}
 			return string.Empty;
 		}
+
+		public override async Task<IdentityResult> AddToRoleAsync(Guid userId, string role)
+		{
+			IUserRoleStore<User, Guid> userRoleStore = GetUserRoleStore();
+			User tUser = await FindByIdAsync(userId).WithCurrentCulture<User>();
+			if (tUser == null)
+			{
+				throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "User Id Not Found", new object[]
+				{
+			userId
+				}));
+			}
+			IList<string> list = await userRoleStore.GetRolesAsync(tUser).WithCurrentCulture<IList<string>>();
+			IdentityResult result;
+			if (list.Contains(role))
+			{
+				result = new IdentityResult(new string[]
+				{
+			"User Already in Role"
+				});
+			}
+			else
+			{
+				await userRoleStore.AddToRoleAsync(tUser, role).WithCurrentCulture();
+				result = await this.UpdateAsync(tUser).WithCurrentCulture<IdentityResult>();
+			}
+			return result;
+		}
+		private IUserRoleStore<User, Guid> GetUserRoleStore()
+		{
+			//IUserRoleStore<User, Guid> userRoleStore = this.Store as IUserRoleStore<User, Guid>;
+			return new UserRoleStore();
+			//if (userRoleStore == null)
+			//{
+			//	throw new NotSupportedException("Store is not UserRoleStore<User,Guid>");
+			//}
+			//return userRoleStore;
+		}
+
+		public override Task<bool> IsInRoleAsync(Guid userId, string role)
+		{
+			return base.IsInRoleAsync(userId, role);
+		}
+
+		public override Task<ClaimsIdentity> CreateIdentityAsync(User user, string authenticationType)
+		{
+			return base.CreateIdentityAsync(user, authenticationType);
+		}
+
+		public async Task<IList<string>> GetOrganizationRolesAsync(User user)
+		{
+			UserStore store = this.Store as UserStore;
+			return await store.GetOrganizationRolesAsync(user);
+		}
+
 	}
 }

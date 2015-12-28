@@ -11,8 +11,8 @@ using GeneX.Security;
 namespace GeneX.Security.Test.Migrations
 {
 
-    internal class Configuration : DbMigrationsConfiguration<DbTest>
-    {
+	internal class Configuration : DbMigrationsConfiguration<DbTest>
+	{
 		public Configuration()
 		{
 			AutomaticMigrationsEnabled = true;

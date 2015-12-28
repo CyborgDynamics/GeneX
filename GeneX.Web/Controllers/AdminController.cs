@@ -10,8 +10,8 @@ using System.Globalization;
 
 namespace GeneX.Web.Controllers
 {
-    public class AdminController : Controller
-    {
+	public class AdminController : Controller
+	{
 		private string ServerMapPath
 		{
 			get
@@ -26,11 +26,12 @@ namespace GeneX.Web.Controllers
 				}
 			}
 		}
-        // GET: Admin
-        public ActionResult Index()
-        {
-            return View();
-        }
+		// GET: Admin
+		[Authorize(Roles ="Any")]
+		public ActionResult Index()
+		{
+			return View();
+		}
 
 		[HttpPost]
 		public ActionResult Index(Guid? id, HttpPostedFileBase file)
@@ -123,5 +124,5 @@ namespace GeneX.Web.Controllers
 
 			return RedirectToAction("Index", "Home");
 		}
-    }
+	}
 }

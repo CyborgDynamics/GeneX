@@ -111,9 +111,9 @@ namespace GeneX.Web.Provider
 		public static AuthenticationProperties CreateProperties(string userName)
 		{
 			IDictionary<string, string> data = new Dictionary<string, string>
-            {
-                { "userName", userName }
-            };
+			{
+				{ "userName", userName }
+			};
 			return new AuthenticationProperties(data);
 		}
 	}

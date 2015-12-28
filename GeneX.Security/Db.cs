@@ -1,35 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System.Security.Claims;
-using System.Threading.Tasks;
+
 namespace GeneX.Security
 {
-	public class UserLogin : IdentityUserLogin<Guid> { }
-	public class UserRole : IdentityUserRole<Guid> { }
-	public class Role : IdentityRole<Guid, UserRole>
-	{
-		public string Description { get; set; }
-	}
-
-	public class RoleStore : RoleStore<Role, Guid, UserRole> 
-	{
-		public RoleStore(Db context)
-			: base(context)
-		{
-		}
-	}
-
-	public class RoleManager : RoleManager<Role, Guid> 
-	{
-		public RoleManager(IRoleStore<Role,Guid> store) : base(store) { }
-	}
-
-	public class UserClaim : IdentityUserClaim<Guid> { }
+	
 
 	public class Db : IdentityDbContext<User, Role, Guid, UserLogin, UserRole, UserClaim>
 	{

@@ -32,14 +32,14 @@ namespace GeneX.Security.Migrations
 			User user1 = userManager.FindByEmail("trenton.adams@gmail.com");
 			if (user1 == null)
 			{
-				user1 = new User() { Id = Guid.NewGuid(), UserName = "trenton.adams@gmail.com", Email = "trenton.adams@gmail.com" };
+				user1 = new User() { Id = new Guid("1242EFCE-4F32-4D4D-A011-6BC5F9B46C00"), UserName = "trenton.adams@gmail.com", Email = "trenton.adams@gmail.com" };
 				userManager.Create(user1, "CC2014!");
 				user1.Roles.Add(new UserRole() { RoleId = Constants.Roles.Ids.SuperAdministrator, UserId = user1.Id });
 				user1.Organizations.Add(new Organization { OrganizationId = new Guid("{D84B39C4-88EA-43C3-BB9E-09F1BB959453}") });
 				user1.ActiveOrganizationId = new Guid("{D84B39C4-88EA-43C3-BB9E-09F1BB959453}");
-            }
+				user1.Roles.Add(new UserRole() { RoleId = Constants.Roles.Ids.Administrator, UserId = user1.Id });
+			}
 
-			context.SaveChanges();
 			base.Seed(context);
 		}
 

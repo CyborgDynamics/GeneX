@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GeneX.Security</RootNamespace>
     <AssemblyName>GeneX.Security</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
@@ -75,6 +75,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factories\ClaimsIdentityFactory.cs" />
+    <Compile Include="Managers\RoleManager.cs" />
     <Compile Include="Migrations\201506220433232_InitializeAgain.cs" />
     <Compile Include="Migrations\201506220433232_InitializeAgain.Designer.cs">
       <DependentUpon>201506220433232_InitializeAgain.cs</DependentUpon>
@@ -82,19 +84,25 @@
     <Compile Include="Organization.cs" />
     <Compile Include="OrganizationRoleItem.cs" />
     <Compile Include="OrganizationRole.cs" />
-    <Compile Include="OrganizationStore.cs" />
+    <Compile Include="Role.cs" />
+    <Compile Include="Stores\OrganizationStore.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Db.cs" />
-    <Compile Include="IOrganization.cs" />
-    <Compile Include="IOrganizationStore.cs" />
-    <Compile Include="ISecurityEntity.cs" />
+    <Compile Include="Interfaces\IOrganization.cs" />
+    <Compile Include="Interfaces\IOrganizationStore.cs" />
+    <Compile Include="Interfaces\ISecurityEntity.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stores\RoleStore.cs" />
+    <Compile Include="Stores\UserRoleStore.cs" />
     <Compile Include="User.cs" />
-    <Compile Include="UserCampaignRole.cs" />
-    <Compile Include="OrganizationManager.cs" />
-    <Compile Include="UserManager.cs" />
-    <Compile Include="UserStore.cs" />
+    <Compile Include="UserClaim.cs" />
+    <Compile Include="UserLogin.cs" />
+    <Compile Include="UserOrganizationRole.cs" />
+    <Compile Include="Managers\OrganizationManager.cs" />
+    <Compile Include="Managers\UserManager.cs" />
+    <Compile Include="Stores\UserStore.cs" />
+    <Compile Include="UserRole.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

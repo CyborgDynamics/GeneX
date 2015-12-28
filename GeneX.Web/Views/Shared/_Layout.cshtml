@@ -108,16 +108,22 @@
 						<a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
 						<ul id="demo" class="collapse">
 							<li>
-								<a href="#">Dropdown Item</a>
+								<a href="#">Drop down Item</a>
 							</li>
 							<li>
-								<a href="#">Dropdown Item</a>
+								<a href="#">Drop down Item</a>
 							</li>
 						</ul>
 					</li>
 					<li>
 						<a href="/Home/About"><i class="fa fa-fw fa-file"></i>About</a>
 					</li>
+					@if (User.IsInRole("Administrator"))
+					{
+					<li>
+						<a href="/Admin/Index"><i class="fa fa-fw fa-file"></i>Administration</a>
+					</li>
+					}
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
